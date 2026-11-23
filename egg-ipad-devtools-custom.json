@@ -1,0 +1,42 @@
+{
+  "_comment": "Requires a custom image published at GHCR from included Dockerfile; no root/s6-overlay initialization.",
+  "meta": {
+    "version": "PTDL_v2",
+    "update_url": null
+  },
+  "exported_at": "2026-11-23T09:00:00+01:00",
+  "name": "iPad DevTools Chromium (Pterodactyl compatible image)",
+  "author": "devtools@example.com",
+  "description": "Headless Xvfb/Chromium/noVNC development desktop using a custom Pterodactyl-compatible image (no s6-overlay). Set a strong password; protect the endpoint with HTTPS before signing into any account. Image requires build/publish to GHCR first.",
+  "features": null,
+  "docker_images": {
+    "Custom DevTools (replace USERNAME)": "ghcr.io/USERNAME/pterodactyl-devtools:latest"
+  },
+  "file_denylist": [],
+  "startup": "sh /opt/devtools/start.sh",
+  "config": {
+    "files": "{}",
+    "startup": "{\"done\": \"DevTools ready on port\"}",
+    "logs": "{}",
+    "stop": "^^C"
+  },
+  "scripts": {
+    "installation": {
+      "script": "#!/bin/sh\nset -eu\nmkdir -p /mnt/server\necho \"All app files are packaged in the custom Docker image.\"\n",
+      "container": "ghcr.io/pterodactyl/installers:alpine",
+      "entrypoint": "sh"
+    }
+  },
+  "variables": [
+    {
+      "name": "DevTools Password",
+      "description": "Basic-auth password, at least 12 characters. Use only behind HTTPS.",
+      "env_variable": "DEVTOOLS_PASSWORD",
+      "default_value": "",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "required|string|min:12|max:128",
+      "field_type": "text"
+    }
+  ]
+}
